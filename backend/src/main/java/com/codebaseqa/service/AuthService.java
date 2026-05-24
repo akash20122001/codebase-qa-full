@@ -1,5 +1,8 @@
 package com.codebaseqa.service;
 
+import com.codebaseqa.exception.ResourceNotFoundException;
+import com.codebaseqa.exception.ServiceUnavailableException;
+import com.codebaseqa.exception.UnauthorizedException;
 import com.codebaseqa.model.User;
 import com.codebaseqa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -80,7 +83,7 @@ public class AuthService {
 
         if (response == null || !response.containsKey("access_token")) {
             log.error("Failed to exchange code for token. Response: {}", response);
-            throw new RuntimeException("Failed to exchange code for token");
+            throw new UnauthorizedException("Failed to authenticate with GitHub");
         }
 
         String accessToken = (String) response.get("access_token");
@@ -104,7 +107,7 @@ public class AuthService {
             .block();
 
         if (response == null) {
-            throw new RuntimeException("Failed to fetch GitHub user");
+            throw new ServiceUnavailableException("GitHub", "Failed to fetch user information");
         }
 
         // GitHub API returns avatar_url (with underscore), not avatarUrl
@@ -158,7 +161,7 @@ public class AuthService {
 
     public User getCurrentUser(String userId) {
         return userRepository.findById(java.util.UUID.fromString(userId))
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("User", userId));
     }
 
     public record GitHubUser(String id, String login, String email, String avatarUrl) {}

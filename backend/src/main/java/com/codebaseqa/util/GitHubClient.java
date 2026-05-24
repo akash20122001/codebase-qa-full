@@ -1,5 +1,8 @@
 package com.codebaseqa.util;
 
+import com.codebaseqa.exception.ResourceNotFoundException;
+import com.codebaseqa.exception.ServiceUnavailableException;
+import com.codebaseqa.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -39,7 +42,7 @@ public class GitHubClient {
                 .block();
 
             if (response == null) {
-                throw new RuntimeException("Failed to fetch repository information");
+                throw new ServiceUnavailableException("GitHub", "Failed to fetch repository information");
             }
 
             log.info("Successfully fetched repository: {}", response.get("full_name"));
@@ -51,20 +54,20 @@ public class GitHubClient {
         } catch (WebClientResponseException.Forbidden e) {
             log.error("GitHub API returned 403 Forbidden for repository: {}", fullName);
             log.error("Response body: {}", e.getResponseBodyAsString());
-            throw new RuntimeException("You don't have access to this repository");
+            throw new UnauthorizedException("You don't have access to this repository on GitHub");
         } catch (WebClientResponseException.NotFound e) {
             log.error("GitHub API returned 404 Not Found for repository: {}", fullName);
             log.error("Response body: {}", e.getResponseBodyAsString());
             log.error("Request headers were: Authorization=Bearer {}..., Accept=application/vnd.github.v3+json", 
                 token != null && token.length() > 10 ? token.substring(0, 10) : "N/A");
-            throw new RuntimeException("Repository not found");
+            throw new ResourceNotFoundException("Repository", fullName);
         } catch (WebClientResponseException e) {
             log.error("GitHub API error (status {}): {}", e.getStatusCode(), e.getMessage());
             log.error("Response body: {}", e.getResponseBodyAsString());
-            throw new RuntimeException("Failed to fetch repository information from GitHub");
+            throw new ServiceUnavailableException("GitHub", "API returned status " + e.getStatusCode());
         } catch (Exception e) {
             log.error("Failed to fetch repository from GitHub: {}", fullName, e);
-            throw new RuntimeException("Failed to fetch repository information from GitHub");
+            throw new ServiceUnavailableException("GitHub", e.getMessage());
         }
     }
 
@@ -97,7 +100,7 @@ public class GitHubClient {
                 .block();
 
             if (response == null) {
-                throw new RuntimeException("Failed to create webhook");
+                throw new ServiceUnavailableException("GitHub", "Failed to create webhook");
             }
 
             Long webhookId = ((Number) response.get("id")).longValue();
@@ -105,7 +108,7 @@ public class GitHubClient {
             return webhookId;
         } catch (Exception e) {
             log.error("Failed to create webhook for {}", fullName, e);
-            throw new RuntimeException("Failed to create webhook on GitHub");
+            throw new ServiceUnavailableException("GitHub", "Failed to create webhook: " + e.getMessage());
         }
     }
 

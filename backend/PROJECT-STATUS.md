@@ -1,8 +1,8 @@
 # Codebase Q&A - Project Status
 
-**Last Updated:** Task 2.2 Complete  
-**GitHub Repository:** https://github.com/akash20122001/codebase-qa.git  
-**Project Location:** `D:\projects\CodeBaseQA`
+**Last Updated:** Task 2.6 Complete  
+**GitHub Repository:** https://github.com/akash20122001/codebase-qa-full.git  
+**Project Location:** `D:\Projects\CodeBaseQA`
 
 ---
 
@@ -103,16 +103,67 @@
 - **Build Status:** ✅ SUCCESS (3 new files)
 - **Note:** Requires Gemini API key (free at https://aistudio.google.com/app/apikey)
 
-## 🎯 Next Task: Task 2.3 - Indexing Pipeline (Full)
+### Task 2.3: Indexing Pipeline (Full) ✅
+- Implemented `IndexingService.java` with full indexing pipeline
+- Repo cloning with JGit
+- File walking with extension filtering
+- Complete pipeline: clone → walk → chunk → embed → store in pgvector
+- Progress tracking with job status updates
+- **Build Status:** ✅ SUCCESS
+
+### Task 2.4: SQS Worker ✅
+- Implemented `IndexingWorker.java` with SQS polling
+- Message processing with retry logic
+- Automatic message deletion on success
+- Stale job cleanup task
+- **Build Status:** ✅ SUCCESS
+
+### Task 2.5: Query Service (RAG Pipeline) + LLM Service + PromptBuilder ✅
+- Created `LlmService.java` interface
+- Implemented `GeminiLlmService.java` with streaming support
+- Implemented `PromptBuilder.java` using Builder pattern
+- Implemented `QueryService.java` with full RAG pipeline
+- Implemented `CacheService.java` for query caching
+- Implemented `RateLimitService.java` for rate limiting
+- Implemented `QueryController.java` with SSE endpoint
+- **Features:**
+  - Vector search for relevant code chunks
+  - Streaming SSE responses
+  - Query caching (faster repeated queries)
+  - Rate limiting (20 queries/hour)
+  - Conversation context (last 10 messages)
+  - Citations with code snippets
+- **Build Status:** ✅ SUCCESS
+
+### Task 2.6: Conversation Service ✅
+- Created `ConversationService.java` interface
+- Implemented `ConversationServiceImpl.java` with full CRUD operations
+- Implemented `ConversationController.java` with REST endpoints
+- Created 4 response DTOs: ConversationResponse, ConversationListResponse, ConversationListPageResponse, MessageResponse
+- **Endpoints Implemented:**
+  - `GET /api/conversations` - List conversations (paginated, filterable by repo)
+  - `GET /api/conversations/{id}` - Get conversation with all messages
+  - `DELETE /api/conversations/{id}` - Delete conversation
+- **Features:**
+  - Pagination support (default 20, max 50)
+  - Repository filtering
+  - Ownership verification on all operations
+  - Cascade delete of messages
+  - Integration with QueryService for conversation context
+- **Build Status:** ✅ SUCCESS (58 files compiled)
+
+## 🎯 Next Task: Task 2.7 - Chat UI (Frontend)
 
 **What needs to be built:**
-1. Implement `IndexingService.java` — `processFullIndexing()` method
-2. Implement repo cloning with JGit
-3. Implement file walking with extension filtering
-4. Wire up: clone → walk → chunk → embed → store in pgvector
-5. Implement progress tracking (update job status in DB)
+1. Implement `ChatWindow.tsx`
+2. Implement `MessageBubble.tsx` with markdown rendering
+3. Implement `CodeCitation.tsx` with expandable code snippets
+4. Implement `InputBar.tsx` with Enter-to-send
+5. Implement `StreamingMessage.tsx`
+6. Implement `useChat.ts` hook with SSE consumption
+7. Implement `streamQuestion()` in `query.api.ts`
 
-**Reference:** `docs/09-build-plan.md` (Task 2.3)
+**Reference:** `docs/09-build-plan.md` (Task 2.7)
 
 ---
 
@@ -224,13 +275,15 @@ All documentation is in the project root:
 
 - ✅ Task 2.1: Chunking Service (Strategy Pattern)
 - ✅ Task 2.2: Embedding Service (Interface + Impl)
-- ⏭️ **Task 2.3: Indexing Pipeline (Full)** ← NEXT
-- ⏸️ Task 2.4: SQS Worker
-- ⏸️ Task 2.5: Query Service (RAG Pipeline) + LLM Service + PromptBuilder
-- ⏸️ Task 2.6: Conversation Service
-- ⏸️ Task 2.7: Chat UI (Frontend)
+- ✅ Task 2.3: Indexing Pipeline (Full)
+- ✅ Task 2.4: SQS Worker
+- ✅ Task 2.5: Query Service (RAG Pipeline) + LLM Service + PromptBuilder
+- ✅ Task 2.6: Conversation Service
+- ⏭️ **Task 2.7: Chat UI (Frontend)** ← NEXT
 
 **Goal:** Indexing pipeline + RAG query + Chat UI working end-to-end
+
+**Sprint 2 Status:** Backend Complete ✅ (Frontend UI pending)
 
 ---
 
@@ -255,15 +308,25 @@ All documentation is in the project root:
 
 ## 📞 For Next Session
 
-**Start with:** "Continue with Task 2.2 - Embedding Service (Interface + Impl)"
+**Start with:** "Continue with Task 2.7 - Chat UI (Frontend)"
 
-**Context:** We've completed Sprint 1 (all 5 tasks) and Task 2.1 from Sprint 2. The backend foundation includes authentication, repository CRUD, frontend scaffold with React + TypeScript, and now a flexible code chunking service using the Strategy pattern. Next, we need to build the embedding service that will convert code chunks into vector embeddings using Google's Gemini API.
+**Context:** We've completed Sprint 1 (all 5 tasks) and Sprint 2 backend tasks (2.1-2.6). The backend now has a complete RAG pipeline with:
+- Code chunking (Strategy pattern)
+- Vector embeddings (Gemini API)
+- Full indexing pipeline
+- SQS worker for async processing
+- Query service with streaming SSE responses
+- Conversation management with full CRUD
+
+The backend API is fully functional and tested. Next, we need to build the frontend chat interface to consume these APIs.
 
 **What to create:**
-1. Create `EmbeddingService.java` interface
-2. Implement `GeminiEmbeddingService.java` with circuit breaker
-3. Implement single and batch embedding methods
-4. Implement pgvector format conversion
-5. Add circuit breaker configuration for resilience
+1. Implement `ChatWindow.tsx` - Main chat interface
+2. Implement `MessageBubble.tsx` - Message display with markdown
+3. Implement `CodeCitation.tsx` - Expandable code snippets
+4. Implement `InputBar.tsx` - Question input with Enter-to-send
+5. Implement `StreamingMessage.tsx` - Real-time token streaming
+6. Implement `useChat.ts` - Custom hook for chat logic
+7. Implement `streamQuestion()` in `query.api.ts` - SSE client
 
-**Reference:** Follow `docs/09-build-plan.md` Task 2.2 and `docs/05-backend-guide-part6.md` (Section 2.2) and `docs/05-backend-guide-part7.md` (Section 4.2)
+**Reference:** Follow `docs/09-build-plan.md` Task 2.7 and `docs/06-frontend-guide-part*.md`

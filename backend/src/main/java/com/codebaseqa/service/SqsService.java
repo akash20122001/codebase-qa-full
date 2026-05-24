@@ -1,5 +1,6 @@
 package com.codebaseqa.service;
 
+import com.codebaseqa.exception.ServiceUnavailableException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,7 @@ public class SqsService {
             log.info("✅ Sent indexing message to SQS: jobId={}, repoId={}", jobId, repoId);
         } catch (Exception e) {
             log.error("❌ Failed to send SQS message", e);
-            throw new RuntimeException("Failed to queue indexing job", e);
+            throw new ServiceUnavailableException("SQS", "Failed to queue indexing job: " + e.getMessage());
         }
     }
 }

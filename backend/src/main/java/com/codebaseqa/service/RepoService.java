@@ -1,6 +1,7 @@
 package com.codebaseqa.service;
 
 import com.codebaseqa.dto.request.ConnectRepoRequest;
+import com.codebaseqa.exception.ResourceNotFoundException;
 import com.codebaseqa.model.IndexingJob;
 import com.codebaseqa.model.Repo;
 import com.codebaseqa.model.User;
@@ -90,7 +91,7 @@ public class RepoService {
      */
     public Repo getRepo(UUID repoId, UUID userId) {
         return repoRepository.findByIdAndUserId(repoId, userId)
-            .orElseThrow(() -> new RuntimeException("Repository not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("Repository", repoId.toString()));
     }
 
     /**

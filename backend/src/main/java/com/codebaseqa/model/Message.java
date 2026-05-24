@@ -37,6 +37,7 @@ public class Message {
     private List<Citation> citations;
 
     @Column(name = "token_count")
+    @Builder.Default
     private Integer tokenCount = 0;
 
     @CreationTimestamp

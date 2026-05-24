@@ -1,5 +1,6 @@
 package com.codebaseqa.service.impl;
 
+import com.codebaseqa.exception.ServiceUnavailableException;
 import com.codebaseqa.service.LlmService;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
@@ -109,7 +110,7 @@ public class GeminiLlmService implements LlmService {
                 return fullResponse.toString();
             } catch (Exception e) {
                 log.error("Error calling Gemini API", e);
-                throw new RuntimeException("Failed to get response from Gemini: " + e.getMessage(), e);
+                throw new ServiceUnavailableException("Gemini LLM", e.getMessage());
             }
         });
     }

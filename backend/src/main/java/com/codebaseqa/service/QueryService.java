@@ -1,6 +1,10 @@
 package com.codebaseqa.service;
 
 import com.codebaseqa.dto.request.AskQuestionRequest;
+import com.codebaseqa.exception.RateLimitExceededException;
+import com.codebaseqa.exception.RepoNotReadyException;
+import com.codebaseqa.exception.ResourceNotFoundException;
+import com.codebaseqa.exception.UnauthorizedException;
 import com.codebaseqa.model.Conversation;
 import com.codebaseqa.model.Message;
 import com.codebaseqa.model.Repo;
@@ -13,7 +17,6 @@ import com.codebaseqa.service.prompt.PromptBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
@@ -63,25 +66,23 @@ public class QueryService {
         try {
             // Step 1: Rate limiting
             if (rateLimitService.isRateLimited(user.getId())) {
-                sendError(emitter, "RATE_LIMIT_EXCEEDED",
-                    "You have exceeded the rate limit. Please wait before asking another question.",
-                    rateLimitService.getResetTime(user.getId()));
-                return;
+                long retryAfter = rateLimitService.getResetTime(user.getId());
+                throw new RateLimitExceededException(
+                    "You have exceeded the rate limit. You can make 20 queries per hour.",
+                    retryAfter
+                );
             }
 
             // Step 2: Validate repo exists and is ready
             Repo repo = repoRepository.findById(request.getRepoId())
-                .orElseThrow(() -> new RuntimeException("Repository not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Repository", request.getRepoId().toString()));
 
             if (!repo.getUser().getId().equals(user.getId())) {
-                sendError(emitter, "FORBIDDEN", "You don't have access to this repository", 0);
-                return;
+                throw new UnauthorizedException("repository", "query");
             }
 
             if (repo.getStatus() != Repo.RepoStatus.READY) {
-                sendError(emitter, "REPO_NOT_INDEXED",
-                    "Repository is not ready yet. Current status: " + repo.getStatus(), 0);
-                return;
+                throw new RepoNotReadyException(repo.getStatus());
             }
 
             // Step 3: Check cache
@@ -96,7 +97,7 @@ public class QueryService {
             Conversation conversation;
             if (request.getConversationId() != null) {
                 conversation = conversationRepository.findByIdAndUserId(request.getConversationId(), user.getId())
-                    .orElseThrow(() -> new RuntimeException("Conversation not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Conversation", request.getConversationId().toString()));
             } else {
                 // Create new conversation with title from first question
                 String title = request.getQuestion().length() > 50

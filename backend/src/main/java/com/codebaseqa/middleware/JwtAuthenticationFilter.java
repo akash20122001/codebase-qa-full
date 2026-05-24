@@ -40,6 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String method = request.getMethod();
         
         log.info("=== JWT Filter - {} {} ===", method, requestUri);
+        log.info("Query String: {}", request.getQueryString());
         log.info("JwtAuthenticationFilter - Authorization header: {}", authHeader != null ? "Present" : "Missing");
         
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {

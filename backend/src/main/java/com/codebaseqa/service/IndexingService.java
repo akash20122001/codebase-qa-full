@@ -1,5 +1,6 @@
 package com.codebaseqa.service;
 
+import com.codebaseqa.exception.ResourceNotFoundException;
 import com.codebaseqa.model.CodeChunk;
 import com.codebaseqa.model.IndexingJob;
 import com.codebaseqa.model.Repo;
@@ -58,9 +59,9 @@ public class IndexingService {
     @Transactional
     public void processFullIndexing(UUID jobId, UUID repoId) {
         IndexingJob job = jobRepository.findById(jobId)
-            .orElseThrow(() -> new RuntimeException("Job not found: " + jobId));
+            .orElseThrow(() -> new ResourceNotFoundException("IndexingJob", jobId.toString()));
         Repo repo = repoRepository.findById(repoId)
-            .orElseThrow(() -> new RuntimeException("Repo not found: " + repoId));
+            .orElseThrow(() -> new ResourceNotFoundException("Repository", repoId.toString()));
 
         Path cloneDir = Path.of(tempDir, repo.getId().toString());
 

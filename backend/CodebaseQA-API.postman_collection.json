@@ -1,8 +1,8 @@
 {
 	"info": {
 		"_postman_id": "codebaseqa-api-collection",
-		"name": "CodebaseQA API - Task 2.5",
-		"description": "Complete API collection for testing the CodebaseQA Query Service (RAG Pipeline) with authentication, repository management, and query endpoints.",
+		"name": "CodebaseQA API - Complete",
+		"description": "Complete API collection for testing CodebaseQA including authentication, repository management, RAG query pipeline, and conversation management (Tasks 2.5 & 2.6).",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -349,6 +349,200 @@
 				}
 			],
 			"description": "Query endpoints for the RAG pipeline. These endpoints use Server-Sent Events (SSE) for streaming responses."
+		},
+		{
+			"name": "Conversations",
+			"item": [
+				{
+					"name": "List All Conversations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/conversations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"conversations"
+							]
+						},
+						"description": "List all conversations for the current user.\n\n**Response includes:**\n- Conversation ID, title, repo info\n- Message count\n- Created and updated timestamps\n- Pagination metadata (totalCount, page, size, totalPages)\n\n**Default:** Page 0, Size 20"
+					},
+					"response": []
+				},
+				{
+					"name": "List Conversations (Paginated)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/conversations?page=0&size=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"conversations"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"description": "Page number (0-indexed)"
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"description": "Page size (max 50)"
+								}
+							]
+						},
+						"description": "List conversations with custom pagination.\n\n**Parameters:**\n- `page`: Page number (0-indexed, default: 0)\n- `size`: Page size (default: 20, max: 50)\n\n**Use case:** When you have many conversations and want to load them in batches."
+					},
+					"response": []
+				},
+				{
+					"name": "List Conversations by Repository",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/conversations?repoId={{repo_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"conversations"
+							],
+							"query": [
+								{
+									"key": "repoId",
+									"value": "{{repo_id}}",
+									"description": "Filter by repository ID"
+								}
+							]
+						},
+						"description": "List conversations filtered by a specific repository.\n\n**Use case:** Show all conversations for a particular codebase.\n\n**Before using:** Set {{repo_id}} to a valid repository ID."
+					},
+					"response": []
+				},
+				{
+					"name": "List Conversations by Repo (Paginated)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/conversations?repoId={{repo_id}}&page=0&size=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"conversations"
+							],
+							"query": [
+								{
+									"key": "repoId",
+									"value": "{{repo_id}}",
+									"description": "Filter by repository ID"
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"description": "Page number"
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"description": "Page size"
+								}
+							]
+						},
+						"description": "List conversations for a specific repository with pagination.\n\n**Combines:** Repository filtering + pagination"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Conversation Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/conversations/{{conversation_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"conversations",
+								"{{conversation_id}}"
+							]
+						},
+						"description": "Get a specific conversation with all its messages.\n\n**Response includes:**\n- Full conversation details\n- All messages (user and assistant)\n- Citations for assistant messages\n- Token counts\n- Timestamps\n\n**Before using:** Set {{conversation_id}} to a valid conversation ID (get from list or query response).\n\n**Use case:** View conversation history, display in UI."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Conversation",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/conversations/{{conversation_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"conversations",
+								"{{conversation_id}}"
+							]
+						},
+						"description": "Delete a conversation and all its messages.\n\n**Before using:** Set {{conversation_id}} to the conversation you want to delete.\n\n**Note:** This action is permanent and cannot be undone. All messages in the conversation will be deleted (cascade delete).\n\n**Expected:** Success message on 200 OK, or 404 if conversation not found or access denied."
+					},
+					"response": []
+				}
+			],
+			"description": "Conversation management endpoints (Task 2.6). Manage conversation history, view messages, and delete conversations."
 		},
 		{
 			"name": "Health Check",
