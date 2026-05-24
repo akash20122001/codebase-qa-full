@@ -1,6 +1,6 @@
 # Codebase Q&A - Project Status
 
-**Last Updated:** Task 2.6 Complete  
+**Last Updated:** Tasks 2.6, 3.2, 3.3 Complete - Ready for AWS Deployment  
 **GitHub Repository:** https://github.com/akash20122001/codebase-qa-full.git  
 **Project Location:** `D:\Projects\CodeBaseQA`
 
@@ -152,18 +152,70 @@
   - Integration with QueryService for conversation context
 - **Build Status:** ✅ SUCCESS (58 files compiled)
 
-## 🎯 Next Task: Task 2.7 - Chat UI (Frontend)
+### Task 3.2: Webhook Integration ✅
+- Created `WebhookService.java` with GitHub push event processing
+- Created `WebhookController.java` with webhook endpoints
+- **Endpoints Implemented:**
+  - `POST /api/repos/webhook/github` - Receive GitHub webhooks
+  - `GET /api/repos/webhook/github/health` - Health check
+- **Features:**
+  - HMAC SHA-256 signature verification for security
+  - Changed file extraction from commits
+  - Code file filtering (only .java, .ts, .py, etc.)
+  - Incremental indexing job creation
+  - Cache invalidation on code changes
+  - Automatic re-indexing on push events
+- **Enhancements:**
+  - Added `sendIncrementalIndexingMessage()` to SqsService
+  - Added `invalidateRepoCache()` to CacheService
+  - Added `findByFullName()` to RepoRepository
+  - Added `webhook-secret` configuration to application.yml
+- **Build Status:** ✅ SUCCESS (69 files compiled)
+- **Documentation:** `TASK-3.2-WEBHOOK-INTEGRATION.md`
+
+### Task 3.3: Global Exception Handler ✅
+- Created `GlobalExceptionHandler.java` with comprehensive exception handling
+- Created 7 custom exception classes:
+  - `ResourceNotFoundException` → 404
+  - `UnauthorizedException` → 403
+  - `RateLimitExceededException` → 429 (with Retry-After header)
+  - `RepoNotReadyException` → 400 (with current status)
+  - `InvalidRequestException` → 400
+  - `DuplicateResourceException` → 409
+  - `ServiceUnavailableException` → 503
+- Created `ErrorResponse` DTO for consistent error format
+- **Replaced ALL RuntimeException usages across:**
+  - QueryService.java
+  - ConversationServiceImpl.java
+  - RepoService.java
+  - AuthService.java
+  - IndexingService.java
+  - SqsService.java
+  - GitHubClient.java
+  - GeminiLlmService.java
+- **Handles Framework Exceptions:**
+  - AccessDeniedException → 403
+  - AuthenticationException → 401
+  - MethodArgumentNotValidException → 400 (validation errors)
+  - ConstraintViolationException → 400
+  - HttpMessageNotReadableException → 400 (malformed JSON)
+  - MethodArgumentTypeMismatchException → 400 (type mismatch)
+  - CallNotPermittedException → 503 (circuit breaker open)
+- **Build Status:** ✅ SUCCESS (67 files compiled)
+- **Documentation:** `TASK-3.3-GLOBAL-EXCEPTION-HANDLER.md`
+
+## 🎯 Next Task: Task 3.4 - Deploy Backend to AWS
 
 **What needs to be built:**
-1. Implement `ChatWindow.tsx`
-2. Implement `MessageBubble.tsx` with markdown rendering
-3. Implement `CodeCitation.tsx` with expandable code snippets
-4. Implement `InputBar.tsx` with Enter-to-send
-5. Implement `StreamingMessage.tsx`
-6. Implement `useChat.ts` hook with SSE consumption
-7. Implement `streamQuestion()` in `query.api.ts`
+1. Create RDS PostgreSQL instance
+2. Create SQS queues (main + DLQ)
+3. Store secrets in SSM Parameter Store
+4. Launch EC2 instance
+5. Build JAR and deploy
+6. Run Flyway migrations against RDS
+7. Configure security groups and IAM roles
 
-**Reference:** `docs/09-build-plan.md` (Task 2.7)
+**Reference:** `docs/09-build-plan.md` (Task 3.4) and `docs/07-infrastructure.md`
 
 ---
 
@@ -279,11 +331,23 @@ All documentation is in the project root:
 - ✅ Task 2.4: SQS Worker
 - ✅ Task 2.5: Query Service (RAG Pipeline) + LLM Service + PromptBuilder
 - ✅ Task 2.6: Conversation Service
-- ⏭️ **Task 2.7: Chat UI (Frontend)** ← NEXT
+- ⏭️ Task 2.7: Chat UI (Frontend) - DEFERRED
 
 **Goal:** Indexing pipeline + RAG query + Chat UI working end-to-end
 
-**Sprint 2 Status:** Backend Complete ✅ (Frontend UI pending)
+**Sprint 2 Status:** Backend Complete ✅ (Frontend deferred until after deployment)
+
+---
+
+## 🎯 Sprint 3 Progress (Days 13-15)
+
+- ✅ Task 3.2: Webhook Integration
+- ✅ Task 3.3: Global Exception Handler
+- ⏭️ **Task 3.4: Deploy Backend to AWS** ← NEXT
+
+**Goal:** Production deployment with monitoring
+
+**Sprint 3 Status:** In Progress (2/3 tasks complete)
 
 ---
 
@@ -308,25 +372,28 @@ All documentation is in the project root:
 
 ## 📞 For Next Session
 
-**Start with:** "Continue with Task 2.7 - Chat UI (Frontend)"
+**Start with:** "Continue with Task 3.4 - Deploy Backend to AWS"
 
-**Context:** We've completed Sprint 1 (all 5 tasks) and Sprint 2 backend tasks (2.1-2.6). The backend now has a complete RAG pipeline with:
-- Code chunking (Strategy pattern)
-- Vector embeddings (Gemini API)
-- Full indexing pipeline
-- SQS worker for async processing
+**Context:** We've completed Sprint 1 (all 5 tasks), Sprint 2 backend tasks (2.1-2.6), and Sprint 3 tasks 3.2-3.3. The backend now has:
+- Complete RAG pipeline with code chunking, embeddings, and vector search
+- Full authentication with GitHub OAuth + JWT
+- Repository management with CRUD operations
 - Query service with streaming SSE responses
 - Conversation management with full CRUD
+- Webhook integration for automatic incremental re-indexing
+- Comprehensive global exception handling with custom exceptions
 
-The backend API is fully functional and tested. Next, we need to build the frontend chat interface to consume these APIs.
+The backend is fully functional and tested locally. Next, we need to deploy it to AWS.
 
 **What to create:**
-1. Implement `ChatWindow.tsx` - Main chat interface
-2. Implement `MessageBubble.tsx` - Message display with markdown
-3. Implement `CodeCitation.tsx` - Expandable code snippets
-4. Implement `InputBar.tsx` - Question input with Enter-to-send
-5. Implement `StreamingMessage.tsx` - Real-time token streaming
-6. Implement `useChat.ts` - Custom hook for chat logic
-7. Implement `streamQuestion()` in `query.api.ts` - SSE client
+1. Create RDS PostgreSQL instance with pgvector extension
+2. Create SQS queues (main + DLQ)
+3. Store secrets in SSM Parameter Store (GitHub OAuth, JWT secret, Gemini API key)
+4. Launch EC2 instance with Java 21
+5. Build production JAR
+6. Deploy application to EC2
+7. Run Flyway migrations against RDS
+8. Configure security groups and IAM roles
+9. Set up CloudWatch monitoring
 
-**Reference:** Follow `docs/09-build-plan.md` Task 2.7 and `docs/06-frontend-guide-part*.md`
+**Reference:** Follow `docs/09-build-plan.md` Task 3.4 and `docs/07-infrastructure.md`

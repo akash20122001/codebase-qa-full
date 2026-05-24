@@ -24,14 +24,15 @@ public class SqsService {
     private String queueUrl;
 
     /**
-     * Send an indexing job message to SQS.
+     * Send a full indexing job message to SQS.
      * The worker will pick this up and process the indexing.
      */
     public void sendIndexingMessage(UUID jobId, UUID repoId) {
         try {
             String body = objectMapper.writeValueAsString(Map.of(
                 "jobId", jobId.toString(),
-                "repoId", repoId.toString()
+                "repoId", repoId.toString(),
+                "type", "FULL"
             ));
 
             sqsClient.sendMessage(SendMessageRequest.builder()
@@ -39,10 +40,36 @@ public class SqsService {
                 .messageBody(body)
                 .build());
 
-            log.info("✅ Sent indexing message to SQS: jobId={}, repoId={}", jobId, repoId);
+            log.info("✅ Sent full indexing message to SQS: jobId={}, repoId={}", jobId, repoId);
         } catch (Exception e) {
             log.error("❌ Failed to send SQS message", e);
             throw new ServiceUnavailableException("SQS", "Failed to queue indexing job: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Send an incremental indexing message to SQS.
+     * Only the specified files will be re-indexed.
+     */
+    public void sendIncrementalIndexingMessage(UUID jobId, UUID repoId, java.util.List<String> changedFiles) {
+        try {
+            String body = objectMapper.writeValueAsString(Map.of(
+                "jobId", jobId.toString(),
+                "repoId", repoId.toString(),
+                "type", "INCREMENTAL",
+                "changedFiles", changedFiles
+            ));
+
+            sqsClient.sendMessage(SendMessageRequest.builder()
+                .queueUrl(queueUrl)
+                .messageBody(body)
+                .build());
+
+            log.info("✅ Sent incremental indexing message to SQS: jobId={}, repoId={}, files={}", 
+                jobId, repoId, changedFiles.size());
+        } catch (Exception e) {
+            log.error("❌ Failed to send incremental indexing message to SQS", e);
+            throw new ServiceUnavailableException("SQS", "Failed to queue incremental indexing job: " + e.getMessage());
         }
     }
 }

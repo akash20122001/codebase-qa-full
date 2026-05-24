@@ -21,17 +21,28 @@ public class CacheService {
 
     /**
      * Invalidate all cache entries for a specific repo.
+     * Called after re-indexing to ensure fresh query results.
      */
     public void invalidateRepoCache(UUID repoId) {
         try {
-            String pattern = REPO_CACHE_PREFIX + repoId + ":*";
-            var keys = redisTemplate.keys(pattern);
-            if (keys != null && !keys.isEmpty()) {
-                redisTemplate.delete(keys);
-                log.debug("Invalidated {} cache entries for repo {}", keys.size(), repoId);
+            // Invalidate repo-specific cache
+            String repoPattern = REPO_CACHE_PREFIX + repoId + ":*";
+            var repoKeys = redisTemplate.keys(repoPattern);
+            if (repoKeys != null && !repoKeys.isEmpty()) {
+                redisTemplate.delete(repoKeys);
+                log.info("Invalidated {} repo cache entries for repo {}", repoKeys.size(), repoId);
+            }
+
+            // Invalidate query cache for this repo
+            String queryPattern = QUERY_CACHE_PREFIX + repoId + ":*";
+            var queryKeys = redisTemplate.keys(queryPattern);
+            if (queryKeys != null && !queryKeys.isEmpty()) {
+                redisTemplate.delete(queryKeys);
+                log.info("Invalidated {} query cache entries for repo {}", queryKeys.size(), repoId);
             }
         } catch (Exception e) {
             log.warn("Failed to invalidate cache for repo {}: {}", repoId, e.getMessage());
+            // Don't throw - cache invalidation failure shouldn't break the flow
         }
     }
 
