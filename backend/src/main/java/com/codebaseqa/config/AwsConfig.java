@@ -26,23 +26,26 @@ public class AwsConfig {
     public SqsClient sqsClient() {
         log.info("🔧 Initializing AWS SQS Client...");
         log.info("   Region: {}", region);
-        log.info("   Access Key: {}", accessKey != null && !accessKey.isEmpty() ? accessKey.substring(0, 4) + "****" : "NOT SET");
-        log.info("   Secret Key: {}", secretKey != null && !secretKey.isEmpty() ? "****" : "NOT SET");
         
-        if (accessKey == null || accessKey.isEmpty() || secretKey == null || secretKey.isEmpty()) {
-            log.error("❌ AWS credentials not configured!");
-            log.error("   Please ensure AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY are set in backend/.env file");
-            throw new IllegalStateException(
-                "AWS credentials not configured. Please set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY in your .env file"
-            );
+        SqsClient client;
+        
+        // Check if credentials are provided (local development)
+        if (accessKey != null && !accessKey.isEmpty() && secretKey != null && !secretKey.isEmpty()) {
+            log.info("   Using static credentials (local development)");
+            log.info("   Access Key: {}****", accessKey.substring(0, Math.min(4, accessKey.length())));
+            
+            AwsBasicCredentials awsCredentials = AwsBasicCredentials.create(accessKey, secretKey);
+            client = SqsClient.builder()
+                .region(Region.of(region))
+                .credentialsProvider(StaticCredentialsProvider.create(awsCredentials))
+                .build();
+        } else {
+            // Use default credential provider chain (EC2 IAM role, environment variables, etc.)
+            log.info("   Using default credential provider chain (EC2 IAM role or environment)");
+            client = SqsClient.builder()
+                .region(Region.of(region))
+                .build();
         }
-
-        AwsBasicCredentials awsCredentials = AwsBasicCredentials.create(accessKey, secretKey);
-
-        SqsClient client = SqsClient.builder()
-            .region(Region.of(region))
-            .credentialsProvider(StaticCredentialsProvider.create(awsCredentials))
-            .build();
         
         log.info("✅ AWS SQS Client initialized successfully");
         return client;
