@@ -1,0 +1,155 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: codebase-qa
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/codebaseqa
+    username: postgres
+    password: postgres
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    open-in-view: false
+  
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+  
+  data:
+    redis:
+      url: redis://127.0.0.1:6379
+  
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: ${GITHUB_CLIENT_ID:your-client-id}
+            client-secret: ${GITHUB_CLIENT_SECRET:your-client-secret}
+            scope: repo,read:user
+        provider:
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:your-super-secret-key-minimum-32-characters-long-change-this-in-production}
+    expiration-ms: 86400000  # 24 hours
+  
+  github:
+    client-id: ${GITHUB_CLIENT_ID:your-github-client-id}
+    client-secret: ${GITHUB_CLIENT_SECRET:your-github-client-secret}
+    redirect-uri: ${GITHUB_REDIRECT_URI:http://localhost:8080/api/auth/github/callback}
+  
+  embedding:
+    provider: ${EMBEDDING_PROVIDER:voyage}  # Options: gemini, voyage
+    
+    # Gemini Configuration (legacy)
+    gemini:
+      api-key: ${GEMINI_API_KEY:your-gemini-api-key}
+      embedding-model: text-embedding-004
+      chat-model: gemini-2.5-flash
+      base-url: https://generativelanguage.googleapis.com
+      rate-limit:
+        delay-ms: 2000  # 2 seconds base delay for exponential backoff
+        max-retries: 5  # Maximum retry attempts for 429 errors
+    
+    # Voyage AI Configuration (recommended)
+    voyage:
+      api-key: ${VOYAGE_API_KEY:your-voyage-api-key}
+      model: voyage-code-3
+      dimension: 1024  # Options: 256, 512, 1024 (default), 2048
+      batch-size: 128  # Max 128 items per batch
+  
+  # Legacy gemini config (for backward compatibility)
+  gemini:
+    api-key: ${GEMINI_API_KEY:your-gemini-api-key}
+    embedding-model: text-embedding-004
+    chat-model: gemini-2.5-flash
+    base-url: https://generativelanguage.googleapis.com
+    rate-limit:
+      delay-ms: 2000
+      max-retries: 5
+  
+  aws:
+    region: ${AWS_REGION:eu-north-1}
+    sqs:
+      queue-url: ${SQS_QUEUE_URL:https://sqs.eu-north-1.amazonaws.com/YOUR-AWS-ACCOUNT-ID/codebaseqa-indexing-queue}
+      dlq-url: ${SQS_DLQ_URL:}
+    credentials:
+      access-key: ${AWS_ACCESS_KEY_ID:your-aws-access-key-id}
+      secret-key: ${AWS_SECRET_ACCESS_KEY:your-aws-secret-access-key}
+  
+  rate-limit:
+    queries-per-hour: 20
+    repos-per-hour: 5
+  
+  indexing:
+    temp-dir: /tmp/codebase-qa
+    max-file-size-kb: 500
+    supported-extensions: .java,.ts,.tsx,.js,.jsx,.py,.go,.rs,.cpp,.c,.h,.rb,.php,.cs,.kt,.swift,.scala
+    excluded-dirs: node_modules,.git,dist,build,target,.idea,.vscode,vendor,__pycache__
+  
+  cors:
+    allowed-origins: http://localhost:5173
+
+  frontend:
+    url: http://localhost:5173
+
+logging:
+  level:
+    com.codebaseqa: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# Circuit Breaker Configuration
+resilience4j:
+  circuitbreaker:
+    instances:
+      gemini-embedding:
+        register-health-indicator: true
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+        wait-duration-in-open-state: 30s
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 100
+        slow-call-duration-threshold: 10s
+      gemini-chat:
+        register-health-indicator: true
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+        wait-duration-in-open-state: 30s
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 100
+        slow-call-duration-threshold: 15s

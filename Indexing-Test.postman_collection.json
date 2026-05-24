@@ -1,0 +1,176 @@
+{
+  "info": {
+    "name": "Codebase QA - Indexing Test",
+    "description": "Test the complete indexing flow",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "jwt_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "repo_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/actuator/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["actuator", "health"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2. GitHub OAuth (Browser)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/github",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "github"]
+        },
+        "description": "Open this in browser, authorize, and copy the JWT token from the response"
+      },
+      "response": []
+    },
+    {
+      "name": "3. Get Current User",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt_token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/me",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "me"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. Connect Repository (Small Test)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();",
+              "if (response.data && response.data.id) {",
+              "    pm.collectionVariables.set('repo_id', response.data.id);",
+              "    console.log('Repo ID saved:', response.data.id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"octocat/Hello-World\",\n  \"defaultBranch\": \"master\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/repos",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "repos"]
+        },
+        "description": "Connects a small test repository. The repo_id will be automatically saved."
+      },
+      "response": []
+    },
+    {
+      "name": "5. Get All Repositories",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt_token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/repos",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "repos"]
+        },
+        "description": "Check the status of your repositories. Status should change from PENDING → INDEXING → READY"
+      },
+      "response": []
+    },
+    {
+      "name": "6. Trigger Re-index",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt_token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/repos/{{repo_id}}/reindex",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "repos", "{{repo_id}}", "reindex"]
+        },
+        "description": "Manually trigger re-indexing of a repository"
+      },
+      "response": []
+    },
+    {
+      "name": "7. Disconnect Repository",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt_token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/repos/{{repo_id}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "repos", "{{repo_id}}"]
+        },
+        "description": "Remove a repository and all its chunks"
+      },
+      "response": []
+    }
+  ]
+}

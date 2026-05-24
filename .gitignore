@@ -1,0 +1,37 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Backend specific (already in backend/.gitignore but adding here too)
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# Node modules (for future frontend)
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# Database
+*.db
+*.sqlite
+
+# Docker volumes
+pgdata/

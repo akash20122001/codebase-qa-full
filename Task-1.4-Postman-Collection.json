@@ -1,0 +1,186 @@
+{
+  "info": {
+    "name": "Codebase QA - Task 1.4 Repository CRUD",
+    "description": "API collection for testing Repository CRUD endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api",
+      "type": "string"
+    },
+    {
+      "key": "jwtToken",
+      "value": "YOUR_JWT_TOKEN_HERE",
+      "type": "string"
+    },
+    {
+      "key": "repoId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. List Repositories",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwtToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/repos",
+          "host": ["{{baseUrl}}"],
+          "path": ["repos"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2. Connect Repository",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 202) {",
+              "    const response = pm.response.json();",
+              "    pm.collectionVariables.set('repoId', response.data.id);",
+              "    console.log('Repo ID saved:', response.data.id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwtToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"repoFullName\": \"octocat/Hello-World\",\n  \"branch\": \"master\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/repos",
+          "host": ["{{baseUrl}}"],
+          "path": ["repos"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. Get Repository Details",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwtToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/repos/{{repoId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["repos", "{{repoId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. Trigger Re-index",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwtToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/repos/{{repoId}}/reindex",
+          "host": ["{{baseUrl}}"],
+          "path": ["repos", "{{repoId}}", "reindex"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "5. Disconnect Repository",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwtToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/repos/{{repoId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["repos", "{{repoId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Error: Invalid Repo Format",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwtToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"repoFullName\": \"invalid-format\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/repos",
+          "host": ["{{baseUrl}}"],
+          "path": ["repos"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Error: No Authentication",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/repos",
+          "host": ["{{baseUrl}}"],
+          "path": ["repos"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -1,0 +1,428 @@
+{
+	"info": {
+		"_postman_id": "codebaseqa-api-collection",
+		"name": "CodebaseQA API - Task 2.5",
+		"description": "Complete API collection for testing the CodebaseQA Query Service (RAG Pipeline) with authentication, repository management, and query endpoints.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						},
+						"description": "Get the current authenticated user's profile. Use this to verify your JWT token is valid."
+					},
+					"response": []
+				},
+				{
+					"name": "GitHub OAuth (Browser)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/github",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"github"
+							]
+						},
+						"description": "Redirects to GitHub OAuth. Open this URL in a browser to authenticate. After successful auth, you'll receive a JWT token."
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints for GitHub OAuth and user management."
+		},
+		{
+			"name": "Repositories",
+			"item": [
+				{
+					"name": "List Repositories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/repos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"repos"
+							]
+						},
+						"description": "List all connected repositories for the current user. Use this to get a repoId for queries."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Repository Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/repos/{{repo_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"repos",
+								"{{repo_id}}"
+							]
+						},
+						"description": "Get details of a specific repository including status and chunk count."
+					},
+					"response": []
+				},
+				{
+					"name": "Connect Repository",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"repoFullName\": \"octocat/hello-world\",\n  \"branch\": \"main\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/repos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"repos"
+							]
+						},
+						"description": "Connect a new GitHub repository. This will trigger indexing. Status will be PENDING initially."
+					},
+					"response": []
+				}
+			],
+			"description": "Repository management endpoints."
+		},
+		{
+			"name": "Query (RAG Pipeline)",
+			"item": [
+				{
+					"name": "Ask Question (New Conversation)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "text/event-stream",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"repoId\": \"{{repo_id}}\",\n  \"question\": \"How does the authentication middleware work?\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/query",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"query"
+							]
+						},
+						"description": "Ask a question about a repository. This creates a new conversation.\n\n**Response Format (SSE):**\n- Event: `citations` - Relevant code chunks\n- Event: `token` - Streamed response tokens\n- Event: `done` - Completion metadata (save conversationId for follow-ups)\n- Event: `error` - Error information\n\n**Note:** Postman will show the raw SSE stream. For better visualization, use the \"Visualize\" tab or test in a browser/custom client."
+					},
+					"response": []
+				},
+				{
+					"name": "Ask Follow-up Question",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "text/event-stream",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"repoId\": \"{{repo_id}}\",\n  \"conversationId\": \"{{conversation_id}}\",\n  \"question\": \"Can you show me an example of how to use it?\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/query",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"query"
+							]
+						},
+						"description": "Ask a follow-up question in an existing conversation. The LLM will have context from previous messages.\n\n**Before using:** Update {{conversation_id}} with the conversationId from the previous query's `done` event."
+					},
+					"response": []
+				},
+				{
+					"name": "Test Rate Limiting",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "text/event-stream",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"repoId\": \"{{repo_id}}\",\n  \"question\": \"Test rate limit\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/query",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"query"
+							]
+						},
+						"description": "Use this to test rate limiting. Run this request 21 times rapidly to trigger the rate limit (20 queries/hour).\n\n**Expected:** First 20 succeed, 21st returns error event with code RATE_LIMIT_EXCEEDED."
+					},
+					"response": []
+				},
+				{
+					"name": "Query Non-Indexed Repo (Error Test)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "text/event-stream",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"repoId\": \"{{pending_repo_id}}\",\n  \"question\": \"This should fail\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/query",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"query"
+							]
+						},
+						"description": "Test querying a repository that's not ready yet (status = PENDING or INDEXING).\n\n**Expected:** Error event with code REPO_NOT_INDEXED.\n\n**Setup:** Set {{pending_repo_id}} to a repo that's not READY."
+					},
+					"response": []
+				},
+				{
+					"name": "Query with Long Question (Validation Test)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "text/event-stream",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"repoId\": \"{{repo_id}}\",\n  \"question\": \"This is a very long question that exceeds the maximum allowed length of 1000 characters. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/query",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"query"
+							]
+						},
+						"description": "Test validation for questions exceeding 1000 characters.\n\n**Expected:** HTTP 400 Bad Request with validation error message."
+					},
+					"response": []
+				}
+			],
+			"description": "Query endpoints for the RAG pipeline. These endpoints use Server-Sent Events (SSE) for streaming responses."
+		},
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actuator/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						},
+						"description": "Check if the backend is running and healthy. Also shows circuit breaker status."
+					},
+					"response": []
+				}
+			],
+			"description": "Health check and monitoring endpoints."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Pre-request script runs before each request",
+					"// You can add dynamic variable generation here if needed"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Test script runs after each request",
+					"// Add assertions here to validate responses"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "your-jwt-token-here",
+			"type": "string"
+		},
+		{
+			"key": "repo_id",
+			"value": "your-repo-id-here",
+			"type": "string"
+		},
+		{
+			"key": "conversation_id",
+			"value": "your-conversation-id-here",
+			"type": "string"
+		},
+		{
+			"key": "pending_repo_id",
+			"value": "pending-repo-id-here",
+			"type": "string"
+		}
+	]
+}
