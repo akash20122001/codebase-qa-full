@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: codebase-qa-backend
+    runtime: java
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/backend-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: JAVA_VERSION
+        value: 21
+      - key: MAVEN_OPTS
+        value: -Xmx512m
+    healthCheckPath: /actuator/health
