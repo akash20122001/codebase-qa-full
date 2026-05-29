@@ -131,6 +131,9 @@ management:
   endpoint:
     health:
       show-details: when-authorized
+  health:
+    redis:
+      enabled: false
 
 # Circuit Breaker Configuration
 resilience4j:

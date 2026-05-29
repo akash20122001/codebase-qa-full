@@ -37,7 +37,7 @@ public class SecurityConfig {
                 // Permit async dispatches (for SSE streaming)
                 .dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
                 // Public endpoints
-                .requestMatchers("/api/auth/github", "/api/auth/github/", "/api/auth/github/callback").permitAll()
+                .requestMatchers("/", "/api/auth/github", "/api/auth/github/", "/api/auth/github/callback").permitAll()
                 .requestMatchers("/api/repos/webhook/github").permitAll()
                 .requestMatchers("/actuator/health").permitAll()
                 // All other requests require authentication
