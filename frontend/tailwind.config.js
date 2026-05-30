@@ -1,24 +1,78 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        primary: { 
-          50: '#eff6ff', 
-          500: '#3b82f6', 
-          600: '#2563eb', 
-          700: '#1d4ed8' 
+        brand: {
+          50: '#F5F3FF',
+          100: '#EDE9FE',
+          200: '#DDD6FE',
+          300: '#C4B5FD',
+          400: '#A78BFA',
+          500: '#8B5CF6',
+          600: '#7C3AED',
+          700: '#6D28D9',
+          800: '#5B21B6',
+          900: '#4C1D95',
+          950: '#2E1065',
         },
-        surface: { 
-          50: '#f8fafc', 
-          100: '#f1f5f9', 
-          200: '#e2e8f0', 
-          400: '#94a3b8',
-          500: '#64748b',
-          800: '#1e293b', 
-          900: '#0f172a' 
+        neutral: {
+          50: '#FAFAFA',
+          100: '#F5F5F5',
+          200: '#E5E5E5',
+          300: '#D4D4D4',
+          400: '#A3A3A3',
+          500: '#737373',
+          600: '#525252',
+          700: '#404040',
+          800: '#262626',
+          900: '#171717',
+          950: '#0A0A0A',
         },
+        success: '#16A34A',
+        warning: '#CA8A04',
+        error: '#DC2626',
+      },
+      fontFamily: {
+        sans: ['Geist', 'Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+      },
+      fontSize: {
+        'display-xs': ['24px', { lineHeight: '32px', letterSpacing: '-0.02em', fontWeight: '600' }],
+        'headline-sm': ['18px', { lineHeight: '28px', letterSpacing: '-0.01em', fontWeight: '600' }],
+        'card-title': ['14px', { lineHeight: '20px', fontWeight: '500' }],
+        'body-md': ['14px', { lineHeight: '24px', fontWeight: '400' }],
+        'body-sm': ['13px', { lineHeight: '20px', fontWeight: '400' }],
+        'label-caps': ['11px', { lineHeight: '16px', letterSpacing: '0.05em', fontWeight: '600' }],
+        'meta-xs': ['12px', { lineHeight: '16px', fontWeight: '400' }],
+        'code-sm': ['13px', { lineHeight: '20px', fontWeight: '400' }],
+      },
+      spacing: {
+        'sidebar-width': '288px',
+        'max-width-chat': '780px',
+        'max-width-site': '1100px',
+        'section-gap': '1.5rem',
+        'component-gap': '1rem',
+        'container-padding': '1rem',
+        'chat-padding': '1.5rem',
+      },
+      maxWidth: {
+        'chat': '780px',
+        'site': '1100px',
+      },
+      borderRadius: {
+        DEFAULT: '0.5rem',
+        'lg': '0.5rem',
+        'xl': '0.75rem',
+      },
+      boxShadow: {
+        'xs': '0 1px 2px rgba(0, 0, 0, 0.05)',
+        'sm': '0 2px 4px rgba(0, 0, 0, 0.05)',
+        DEFAULT: '0 4px 6px rgba(0, 0, 0, 0.05)',
+        'lg': '0 8px 16px rgba(0, 0, 0, 0.08)',
+        'xl': '0 12px 24px rgba(0, 0, 0, 0.1)',
       },
     },
   },

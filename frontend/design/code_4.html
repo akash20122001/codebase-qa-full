@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Geist:wght@400;500;600;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#f2f0f0",
+                    "inverse-surface": "#303031",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#666670",
+                    "secondary-container": "#ab8ffe",
+                    "secondary-fixed-dim": "#cebdff",
+                    "tertiary": "#4e4e58",
+                    "on-secondary-fixed": "#21005e",
+                    "outline": "#7b7487",
+                    "brand-900": "#4C1D95",
+                    "surface-container-highest": "#e3e2e2",
+                    "primary-fixed-dim": "#d2bbff",
+                    "background": "#fbf9f9",
+                    "on-primary-fixed": "#25005a",
+                    "inverse-primary": "#d2bbff",
+                    "on-secondary-fixed-variant": "#4f319c",
+                    "border-subtle": "#F5F5F5",
+                    "on-background": "#1b1c1c",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#e3e2e2",
+                    "on-tertiary-container": "#e7e5f1",
+                    "outline-variant": "#ccc3d8",
+                    "surface-container-low": "#f5f3f3",
+                    "secondary": "#674bb5",
+                    "brand-600": "#7C3AED",
+                    "error": "#DC2626",
+                    "surface": "#fbf9f9",
+                    "on-surface-variant": "#4a4455",
+                    "on-primary": "#ffffff",
+                    "brand-500": "#8B5CF6",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#c7c5d1",
+                    "surface-container-lowest": "#ffffff",
+                    "warning": "#CA8A04",
+                    "tertiary-fixed": "#e3e1ed",
+                    "primary-container": "#7c3aed",
+                    "surface-container-high": "#e9e8e7",
+                    "on-tertiary-fixed": "#1a1b23",
+                    "brand-50": "#F5F3FF",
+                    "primary": "#630ed4",
+                    "border-default": "#E5E5E5",
+                    "surface-bg": "#FFFFFF",
+                    "on-surface": "#1b1c1c",
+                    "surface-tint": "#732ee4",
+                    "surface-dim": "#dbdad9",
+                    "brand-400": "#A78BFA",
+                    "on-primary-container": "#ede0ff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#46464f",
+                    "brand-700": "#6D28D9",
+                    "primary-fixed": "#eaddff",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#e8ddff",
+                    "surface-container": "#efeded",
+                    "success": "#16A34A",
+                    "surface-bright": "#fbf9f9",
+                    "on-secondary-container": "#3f1e8c",
+                    "surface-subtle": "#FAFAFA"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "chat-padding": "1.5rem",
+                    "max-width-chat": "780px",
+                    "section-gap": "1.5rem",
+                    "component-gap": "1rem",
+                    "max-width-site": "1100px",
+                    "container-padding": "1rem",
+                    "sidebar-width": "288px"
+            },
+            "fontFamily": {
+                    "body-md": ["Geist"],
+                    "body-sm": ["Geist"],
+                    "card-title": ["Geist"],
+                    "headline-sm": ["Geist"],
+                    "meta-xs": ["Geist"],
+                    "display-xs": ["Geist"],
+                    "label-caps": ["Geist"],
+                    "code-sm": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "card-title": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "headline-sm": ["18px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "meta-xs": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "display-xs": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "code-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Geist', sans-serif; }
+        .sidebar-active { border-left-width: 2px; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- SideNavBar Anchor -->
+<aside class="fixed h-full w-sidebar-width left-0 top-0 bg-surface-container-low border-r border-outline-variant flex flex-col py-4 space-y-2 z-50 transition-all duration-300" id="sidebar">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[20px]" data-icon="terminal">terminal</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-surface">Codebase AI</h1>
+<p class="font-body-sm text-[11px] text-on-surface-variant opacity-60">v1.2.4</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="text-on-surface-variant flex items-center px-6 py-3 hover:bg-surface-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="folder_open">folder_open</span>
+<span class="font-label-caps text-label-caps">Repositories</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-6 py-3 hover:bg-surface-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-label-caps text-label-caps">Conversations</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-6 py-3 hover:bg-surface-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="sync">sync</span>
+<span class="font-label-caps text-label-caps">Indexing</span>
+</a>
+<!-- Active State for Settings -->
+<a class="text-on-surface font-bold border-l-2 border-primary bg-surface-container-high flex items-center px-6 py-3 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</nav>
+<div class="px-4 mt-auto pt-4">
+<button class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-lg font-card-title text-card-title transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                New Chat
+            </button>
+</div>
+<div class="pt-4 border-t border-outline-variant/30 space-y-1">
+<a class="text-on-surface-variant flex items-center px-6 py-2 hover:bg-surface-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="description">description</span>
+<span class="font-label-caps text-label-caps">Documentation</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-6 py-2 hover:bg-surface-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px]" data-icon="rate_review">rate_review</span>
+<span class="font-label-caps text-label-caps">Feedback</span>
+</a>
+</div>
+</aside>
+<main class="ml-sidebar-width flex-1 flex flex-col min-h-screen">
+<!-- TopAppBar Anchor -->
+<header class="sticky top-0 z-40 w-full h-16 bg-surface border-b border-outline-variant flex justify-between items-center px-chat-padding">
+<div class="flex items-center gap-4">
+<div class="flex items-center text-on-surface-variant font-code-sm text-code-sm">
+<span>settings</span>
+<span class="material-symbols-outlined mx-2 text-[16px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold">preferences</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-4 py-1.5 border border-outline-variant rounded-lg font-card-title text-card-title text-on-surface-variant hover:bg-surface-container-highest transition-colors active:scale-95">
+                    Re-index
+                </button>
+<div class="flex items-center gap-1">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="max-w-site mx-auto w-full px-container-padding py-10 flex gap-10">
+<!-- Vertical Sub-Tabs -->
+<nav class="w-48 flex-shrink-0 flex flex-col space-y-1">
+<button class="tab-btn w-full text-left px-4 py-2 rounded-lg font-card-title text-card-title transition-all bg-surface-container-highest text-on-surface font-semibold shadow-xs" id="btn-profile" onclick="switchTab('profile')">
+                    Profile
+                </button>
+<button class="tab-btn w-full text-left px-4 py-2 rounded-lg font-card-title text-card-title transition-all text-on-surface-variant hover:bg-surface-container" id="btn-preferences" onclick="switchTab('preferences')">
+                    Preferences
+                </button>
+<button class="tab-btn w-full text-left px-4 py-2 rounded-lg font-card-title text-card-title transition-all text-on-surface-variant hover:bg-surface-container" id="btn-api" onclick="switchTab('api')">
+                    API Usage
+                </button>
+</nav>
+<!-- Main Settings Area -->
+<div class="flex-1 max-w-[720px]">
+<!-- Profile Section -->
+<section class="tab-content space-y-8" id="tab-profile">
+<div>
+<h2 class="font-display-xs text-display-xs text-on-surface mb-2">User Profile</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Manage your public identity and account security.</p>
+</div>
+<div class="bg-white border border-neutral-200 rounded-xl p-6 shadow-xs flex items-center gap-6">
+<div class="relative group">
+<img alt="User Avatar" class="w-24 h-24 rounded-full border-2 border-brand-500 object-cover" data-alt="A professional, high-end headshot of a software developer with short dark hair and a confident expression. The lighting is soft and cinematic, highlighting crisp facial features against a blurred, modern office background. The overall aesthetic is minimalist and corporate-modern with a clean light-mode color palette and subtle violet accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo1ZKNl_Ub-D_z7mItJLhQwiOF4nEwRooOzJumMiu-7xYUUt4nJ7J0Km-Y56hJpeDTfDRH8OeEPLpTmJfjLegsHIlOdv1cwyNIp-XSz4X5PZk09KXxBb3t96s6Vn5ZgAbg6dnR5xK8PxlhRomsH3Hs2mPbXwuIwMydeLFbxKp6qWuy1YYLRAj9whUTmauWpC7VTemzfkHMUfa4o5aXw_uYwW-ATg-b9h4Y8cjAc8VN3H6kbg_nvAN8MgmSHm2uW77JtT0uOXBezro"/>
+<button class="absolute bottom-0 right-0 p-2 bg-brand-600 text-white rounded-full shadow-lg hover:bg-brand-700 transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="edit">edit</span>
+</button>
+</div>
+<div class="flex-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Alex Rivera</h3>
+<p class="font-code-sm text-code-sm text-on-surface-variant">alex.rivera@codebase.ai</p>
+<div class="mt-4 flex gap-2">
+<span class="px-2 py-0.5 bg-green-50 text-green-600 rounded font-label-caps text-[10px] uppercase border border-green-200">Pro Tier</span>
+<span class="px-2 py-0.5 bg-brand-50 text-brand-600 rounded font-label-caps text-[10px] uppercase border border-brand-200">Engineer</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Username</label>
+<input class="w-full px-4 py-2.5 bg-white border border-neutral-200 rounded-lg focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all font-body-md text-body-md" type="text" value="arivera_dev"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Bio</label>
+<textarea class="w-full px-4 py-2.5 bg-white border border-neutral-200 rounded-lg focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all font-body-md text-body-md" rows="3">Full-stack engineer building distributed systems. I use Codebase AI to audit legacy repositories.</textarea>
+</div>
+</div>
+</section>
+<!-- Preferences Section -->
+<section class="tab-content hidden space-y-8" id="tab-preferences">
+<div>
+<h2 class="font-display-xs text-display-xs text-on-surface mb-2">Preferences</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Customize your workspace and analysis experience.</p>
+</div>
+<div class="space-y-6">
+<div class="space-y-4">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Interface Theme</label>
+<div class="grid grid-cols-3 gap-4">
+<button class="p-4 border-2 border-brand-600 bg-white rounded-xl text-left transition-all hover:border-brand-400 group relative">
+<div class="w-full h-12 bg-neutral-100 rounded mb-2 overflow-hidden border border-neutral-200">
+<div class="w-1/3 h-full bg-neutral-200 border-r border-neutral-300"></div>
+</div>
+<span class="font-card-title text-card-title text-on-surface block">Light Mode</span>
+<div class="absolute top-2 right-2 w-4 h-4 bg-brand-600 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[12px]" data-icon="check" data-weight="fill">check</span>
+</div>
+</button>
+<button class="p-4 border-2 border-transparent bg-neutral-900 rounded-xl text-left transition-all hover:border-neutral-700 group">
+<div class="w-full h-12 bg-neutral-800 rounded mb-2 overflow-hidden border border-neutral-700">
+<div class="w-1/3 h-full bg-neutral-700 border-r border-neutral-600"></div>
+</div>
+<span class="font-card-title text-card-title text-white block">Dark Mode</span>
+</button>
+<button class="p-4 border-2 border-transparent bg-neutral-50 rounded-xl text-left transition-all hover:border-neutral-200 group">
+<div class="w-full h-12 flex rounded mb-2 overflow-hidden border border-neutral-200">
+<div class="w-1/2 h-full bg-white"></div>
+<div class="w-1/2 h-full bg-neutral-900"></div>
+</div>
+<span class="font-card-title text-card-title text-on-surface block">System</span>
+</button>
+</div>
+</div>
+<div class="space-y-4">
+<label class="font-label-caps text-label-caps text-on-surface-variant">Code Syntax Theme</label>
+<div class="bg-neutral-50 border border-neutral-200 rounded-lg p-4 font-code-sm text-code-sm space-y-1">
+<p><span class="text-purple-600">const</span> <span class="text-blue-600">analysis</span> = <span class="text-red-500">await</span> ai.<span class="text-yellow-600">scan</span>(repo);</p>
+<p><span class="text-green-600">// Select a preset from the dropdown below</span></p>
+</div>
+<select class="w-full px-4 py-2.5 bg-white border border-neutral-200 rounded-lg focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all font-body-md text-body-md appearance-none">
+<option>JetBrains Dark (Default)</option>
+<option>GitHub Light</option>
+<option>One Dark Pro</option>
+<option>Monokai</option>
+</select>
+</div>
+</div>
+</section>
+<!-- API Usage Section -->
+<section class="tab-content hidden space-y-8" id="tab-api">
+<div>
+<h2 class="font-display-xs text-display-xs text-on-surface mb-2">API Usage</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Monitor your indexing and query consumption for the current billing cycle.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Query Limit Card -->
+<div class="bg-white border border-neutral-200 rounded-xl p-6 shadow-xs">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-card-title text-card-title text-on-surface">Monthly Queries</h3>
+<span class="font-code-sm text-code-sm text-brand-600">84% used</span>
+</div>
+<div class="h-2 w-full bg-neutral-100 rounded-full overflow-hidden mb-4">
+<div class="h-full bg-brand-500 rounded-full" style="width: 84%"></div>
+</div>
+<p class="font-meta-xs text-meta-xs text-on-surface-variant">8,421 / 10,000 requests</p>
+<p class="mt-4 font-body-sm text-body-sm text-warning flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="report_problem">report_problem</span>
+                                Reaching limit soon
+                            </p>
+</div>
+<!-- Indexing Card -->
+<div class="bg-white border border-neutral-200 rounded-xl p-6 shadow-xs">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-card-title text-card-title text-on-surface">Repository Indexing</h3>
+<span class="font-code-sm text-code-sm text-success">Low usage</span>
+</div>
+<div class="h-2 w-full bg-neutral-100 rounded-full overflow-hidden mb-4">
+<div class="h-full bg-success rounded-full" style="width: 12%"></div>
+</div>
+<p class="font-meta-xs text-meta-xs text-on-surface-variant">12 / 100 repositories</p>
+<p class="mt-4 font-body-sm text-body-sm text-on-surface-variant">Resets in 12 days</p>
+</div>
+</div>
+<div class="bg-neutral-50 border border-neutral-200 rounded-xl p-6 border-dashed">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-white rounded-lg border border-neutral-200 flex items-center justify-center">
+<span class="material-symbols-outlined text-brand-600" data-icon="key">key</span>
+</div>
+<div>
+<h4 class="font-card-title text-card-title text-on-surface">Master API Key</h4>
+<p class="font-code-sm text-code-sm text-on-surface-variant">Last rotated 3 months ago</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-1.5 bg-white border border-neutral-200 rounded-lg font-card-title text-card-title hover:bg-neutral-100 transition-colors">Reveal</button>
+<button class="px-4 py-1.5 bg-white border border-neutral-200 rounded-lg font-card-title text-card-title hover:bg-neutral-100 transition-colors">Rotate</button>
+</div>
+</div>
+</div>
+</section>
+<div class="mt-12 pt-6 border-t border-outline-variant/30 flex justify-end gap-3">
+<button class="px-6 py-2 border border-neutral-200 rounded-lg font-card-title text-card-title text-on-surface-variant hover:bg-neutral-50 transition-colors">
+                        Discard Changes
+                    </button>
+<button class="px-8 py-2 bg-brand-600 text-white rounded-lg font-card-title text-card-title hover:bg-brand-700 transition-all shadow-sm active:scale-95">
+                        Save Preferences
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<script>
+        function switchTab(tabId) {
+            // Hide all contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            // Show target content
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            // Update button styles
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-surface-container-highest', 'text-on-surface', 'font-semibold', 'shadow-xs');
+                btn.classList.add('text-on-surface-variant', 'hover:bg-surface-container');
+            });
+
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.add('bg-surface-container-highest', 'text-on-surface', 'font-semibold', 'shadow-xs');
+            activeBtn.classList.remove('text-on-surface-variant', 'hover:bg-surface-container');
+        }
+
+        // Add micro-interaction to cards
+        document.querySelectorAll('.shadow-xs').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-1px)';
+                card.style.transition = 'transform 0.15s ease-out';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body></html>

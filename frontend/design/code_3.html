@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Codebase AI - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Geist:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#f2f0f0",
+                    "inverse-surface": "#303031",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#666670",
+                    "secondary-container": "#ab8ffe",
+                    "secondary-fixed-dim": "#cebdff",
+                    "tertiary": "#4e4e58",
+                    "on-secondary-fixed": "#21005e",
+                    "outline": "#7b7487",
+                    "brand-900": "#4C1D95",
+                    "surface-container-highest": "#e3e2e2",
+                    "primary-fixed-dim": "#d2bbff",
+                    "background": "#fbf9f9",
+                    "on-primary-fixed": "#25005a",
+                    "inverse-primary": "#d2bbff",
+                    "on-secondary-fixed-variant": "#4f319c",
+                    "border-subtle": "#F5F5F5",
+                    "on-background": "#1b1c1c",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#e3e2e2",
+                    "on-tertiary-container": "#e7e5f1",
+                    "outline-variant": "#ccc3d8",
+                    "surface-container-low": "#f5f3f3",
+                    "secondary": "#674bb5",
+                    "brand-600": "#7C3AED",
+                    "error": "#DC2626",
+                    "surface": "#fbf9f9",
+                    "on-surface-variant": "#4a4455",
+                    "on-primary": "#ffffff",
+                    "brand-500": "#8B5CF6",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#c7c5d1",
+                    "surface-container-lowest": "#ffffff",
+                    "warning": "#CA8A04",
+                    "tertiary-fixed": "#e3e1ed",
+                    "primary-container": "#7c3aed",
+                    "surface-container-high": "#e9e8e7",
+                    "on-tertiary-fixed": "#1a1b23",
+                    "brand-50": "#F5F3FF",
+                    "primary": "#630ed4",
+                    "border-default": "#E5E5E5",
+                    "surface-bg": "#FFFFFF",
+                    "on-surface": "#1b1c1c",
+                    "surface-tint": "#732ee4",
+                    "surface-dim": "#dbdad9",
+                    "brand-400": "#A78BFA",
+                    "on-primary-container": "#ede0ff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#46464f",
+                    "brand-700": "#6D28D9",
+                    "primary-fixed": "#eaddff",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#e8ddff",
+                    "surface-container": "#efeded",
+                    "success": "#16A34A",
+                    "surface-bright": "#fbf9f9",
+                    "on-secondary-container": "#3f1e8c",
+                    "surface-subtle": "#FAFAFA"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "chat-padding": "1.5rem",
+                    "max-width-chat": "780px",
+                    "section-gap": "1.5rem",
+                    "component-gap": "1rem",
+                    "max-width-site": "1100px",
+                    "container-padding": "1rem",
+                    "sidebar-width": "288px"
+            },
+            "fontFamily": {
+                    "body-md": ["Geist"],
+                    "body-sm": ["Geist"],
+                    "card-title": ["Geist"],
+                    "headline-sm": ["Geist"],
+                    "meta-xs": ["Geist"],
+                    "display-xs": ["Geist"],
+                    "label-caps": ["Geist"],
+                    "code-sm": ["JetBrains Mono"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-pill {
+            font-variation-settings: 'FILL' 1;
+        }
+        body { font-family: 'Geist', sans-serif; }
+        .code-font { font-family: 'JetBrains Mono', monospace; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e3e2e2; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- SideNavBar (Shared Component) -->
+<aside class="fixed h-full w-sidebar-width left-0 top-0 bg-surface-container-low border-r border-outline-variant flex flex-col h-full py-4 space-y-2 z-50">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[20px]" data-weight="fill">developer_mode_tv</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-surface">Codebase AI</h1>
+<span class="font-meta-xs text-meta-xs text-on-surface-variant opacity-70">v1.2.4</span>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Repositories - Active -->
+<a class="text-on-surface font-bold border-l-2 border-primary bg-surface-container-high transition-colors duration-150 flex items-center px-4 py-3 gap-3" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">folder_open</span>
+<span class="font-label-caps text-label-caps">Repositories</span>
+</a>
+<!-- Conversations -->
+<a class="text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-surface-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-caps text-label-caps">Conversations</span>
+</a>
+<!-- Indexing -->
+<a class="text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-surface-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">sync</span>
+<span class="font-label-caps text-label-caps">Indexing</span>
+</a>
+<!-- Settings -->
+<a class="text-on-surface-variant flex items-center px-4 py-3 gap-3 hover:bg-surface-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</nav>
+<div class="px-4 mt-auto space-y-1">
+<button class="w-full mb-4 bg-brand-600 hover:bg-brand-700 text-white font-semibold py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-all active:scale-95 shadow-sm">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span class="font-body-md text-body-md">New Chat</span>
+</button>
+<a class="text-on-surface-variant flex items-center px-4 py-2 gap-3 hover:bg-surface-container transition-colors duration-150 rounded-lg" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-caps text-label-caps text-[10px]">Documentation</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-4 py-2 gap-3 hover:bg-surface-container transition-colors duration-150 rounded-lg" href="#">
+<span class="material-symbols-outlined">rate_review</span>
+<span class="font-label-caps text-label-caps text-[10px]">Feedback</span>
+</a>
+</div>
+</aside>
+<!-- TopAppBar (Shared Component) -->
+<header class="docked full-width top-0 sticky z-40 bg-surface border-b border-outline-variant flex justify-between items-center w-full px-chat-padding h-16 ml-sidebar-width" style="width: calc(100% - 288px);">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="font-code-sm text-code-sm">main-repository</span>
+<span class="text-outline">/</span>
+<span class="font-code-sm text-code-sm font-bold text-primary">production</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-surface-container-highest hover:bg-surface-container rounded-lg px-4 py-1.5 font-body-md text-body-md text-on-surface font-semibold transition-transform active:scale-95">
+                Re-index
+            </button>
+<button class="p-2 hover:bg-surface-container-highest rounded-lg transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-highest rounded-lg transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">help_outline</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-2">
+<img alt="Avatar" data-alt="A professional close-up portrait of a software engineer in a modern, softly lit office environment. The background shows blurred tech gadgets and warm ambient lighting. The person has a friendly expression, wearing a minimalist dark sweater. The lighting is crisp, emphasizing a clean and high-performance atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGumL3kN14nxVFgaiZWPzoE--oaneTQ0RaEyMkKvjv4f6NIpZF6kE0zXSVxh7LBuivkeDpoxEZFqWS3kIiLSn0FWqA_EV_LbXWMsPGVLYIqRkaFSRxti6sjjXYwefjz03BLbG41znKo75o7G14dk0w1BQvRJhf49hk2vOc7u-OnllMWilcAO8w1zc7l8mX4w_1gntKr2CSb8nTmYjxWisuwsOOu0jH1O0lTQFlnunmp_7Kfypxktdn6lLE7TjXxUwnPWf5t0VDZSg"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-sidebar-width p-chat-padding min-h-[calc(100vh-64px)]">
+<div class="max-w-site mx-auto">
+<!-- Welcome Header -->
+<header class="mb-section-gap">
+<h2 class="font-display-xs text-display-xs text-on-surface">Welcome back, Alex.</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">What would you like to build or debug today?</p>
+</header>
+<!-- Ask Anything Section (Hero) -->
+<section class="mb-12">
+<div class="bg-white rounded-xl border border-outline-variant shadow-xs p-6 relative">
+<div class="flex items-center gap-4 mb-4">
+<div class="flex-1 relative">
+<select class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2.5 font-body-md text-body-md appearance-none focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all cursor-pointer">
+<option>production-service-v4</option>
+<option>auth-module-refactor</option>
+<option>ui-components-lib</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-2.5 pointer-events-none text-on-surface-variant">expand_more</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-600 rounded-full">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span class="font-label-caps text-[10px]">READY</span>
+</div>
+</div>
+<div class="relative group">
+<textarea class="w-full bg-white border border-outline-variant rounded-lg p-4 font-body-md text-body-md focus:outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-50 transition-all resize-none" placeholder="Ask a question about the repository... (e.g., 'How is the cache-invalidation handled in the auth module?')" rows="4"></textarea>
+<div class="absolute bottom-4 right-4 flex items-center gap-3">
+<span class="text-meta-xs font-meta-xs text-on-surface-variant opacity-60">⌘ + Enter to send</span>
+<button class="bg-brand-600 hover:bg-brand-700 text-white w-10 h-10 rounded-lg flex items-center justify-center transition-all active:scale-95 shadow-sm">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="mt-4 flex gap-2 overflow-x-auto pb-1">
+<button class="whitespace-nowrap px-3 py-1.5 bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded-full font-meta-xs text-meta-xs text-on-surface-variant transition-colors">
+                            Explain the entry point
+                        </button>
+<button class="whitespace-nowrap px-3 py-1.5 bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded-full font-meta-xs text-meta-xs text-on-surface-variant transition-colors">
+                            Find security vulnerabilities
+                        </button>
+<button class="whitespace-nowrap px-3 py-1.5 bg-surface-container-low hover:bg-surface-container-high border border-outline-variant rounded-full font-meta-xs text-meta-xs text-on-surface-variant transition-colors">
+                            Trace data flow for 'userId'
+                        </button>
+</div>
+</div>
+</section>
+<!-- Recent Conversations Grid (Bento Style) -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Recent Conversations</h3>
+<button class="text-brand-600 font-label-caps text-label-caps hover:underline">View all history</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="bg-white border border-outline-variant rounded-xl p-5 hover:shadow-sm hover:-translate-y-1 transition-all duration-200 cursor-pointer group">
+<div class="flex items-start justify-between mb-4">
+<div class="p-2 bg-brand-50 text-brand-600 rounded-lg group-hover:bg-brand-600 group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">query_stats</span>
+</div>
+<span class="font-meta-xs text-meta-xs text-on-surface-variant">2h ago</span>
+</div>
+<h4 class="font-card-title text-card-title text-on-surface mb-2 line-clamp-2">Optimizing SQL queries in the user analytics module</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-3 mb-4">You analyzed the index usage and suggested adding a composite index on (org_id, created_at)...</p>
+<div class="flex items-center gap-2">
+<span class="font-code-sm text-code-sm text-primary bg-primary-fixed px-2 py-0.5 rounded text-[11px]">analytics-db</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant text-[11px]">4 citations</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white border border-outline-variant rounded-xl p-5 hover:shadow-sm hover:-translate-y-1 transition-all duration-200 cursor-pointer group">
+<div class="flex items-start justify-between mb-4">
+<div class="p-2 bg-brand-50 text-brand-600 rounded-lg group-hover:bg-brand-600 group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">security</span>
+</div>
+<span class="font-meta-xs text-meta-xs text-on-surface-variant">Yesterday</span>
+</div>
+<h4 class="font-card-title text-card-title text-on-surface mb-2 line-clamp-2">JWT Secret handling best practices</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-3 mb-4">Discussion about migrating from environment variables to a dedicated secret manager...</p>
+<div class="flex items-center gap-2">
+<span class="font-code-sm text-code-sm text-primary bg-primary-fixed px-2 py-0.5 rounded text-[11px]">auth-v2</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant text-[11px]">2 citations</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white border border-outline-variant rounded-xl p-5 hover:shadow-sm hover:-translate-y-1 transition-all duration-200 cursor-pointer group">
+<div class="flex items-start justify-between mb-4">
+<div class="p-2 bg-brand-50 text-brand-600 rounded-lg group-hover:bg-brand-600 group-hover:text-white transition-colors">
+<span class="material-symbols-outlined">integration_instructions</span>
+</div>
+<span class="font-meta-xs text-meta-xs text-on-surface-variant">3 days ago</span>
+</div>
+<h4 class="font-card-title text-card-title text-on-surface mb-2 line-clamp-2">Webhook retry logic implementation</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-3 mb-4">Reviewed the exponential backoff strategy for failed payment notifications...</p>
+<div class="flex items-center gap-2">
+<span class="font-code-sm text-code-sm text-primary bg-primary-fixed px-2 py-0.5 rounded text-[11px]">billing-engine</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant text-[11px]">7 citations</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Active Repository Info Card (Asymmetric Layout) -->
+<section class="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden flex flex-col md:flex-row">
+<div class="w-full md:w-1/3 bg-surface-container-high p-6 flex flex-col justify-center">
+<span class="font-label-caps text-label-caps text-primary mb-2">Live Status</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface mb-4">production-service-v4</h4>
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-success animate-pulse"></div>
+<span class="font-body-sm text-body-sm text-on-surface">Fully Indexed</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">database</span>
+<span class="font-body-sm text-body-sm text-on-surface">2.4M lines of code</span>
+</div>
+</div>
+</div>
+<div class="flex-1 p-6 flex flex-col justify-between">
+<p class="font-body-md text-body-md text-on-surface-variant italic mb-6">
+                            "Last updated 14 minutes ago by GitHub Action. All modules have been re-indexed and semantic search is fully operational for the latest commits."
+                        </p>
+<div class="flex items-center justify-between">
+<div class="flex -space-x-2">
+<img alt="Team member" class="w-8 h-8 rounded-full border-2 border-surface-container-low" data-alt="A portrait of a male developer with glasses, smiling confidently. Soft, natural lighting from a nearby window illuminates a workspace with plants in the background. High-resolution digital photograph, clean professional style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGbGJvHGDmafSo5YvjVN7HPHcVjg3zaIytGrDKvJpKq3EfPiXJQ9zN515d7NtImFw9ZJURBiIRLt4iHA5uncpA_QCoi2WDeEIyqZHdqgTWMHrnyA-RSJdRHVHPjewhIQNALO6o46CyIwFXp_MJN_tq_S0tsEtqXW9i0vSLKNucq3fuJudw6D2lVrzO4brII4MeTM1FrWpHcU-tI_ft1jWKSbcE-rEiYC-a1tYmydGg0Cdy6Awjmn8qfqdCgEwTfJ8_r1upXTIsxqM"/>
+<img alt="Team member" class="w-8 h-8 rounded-full border-2 border-surface-container-low" data-alt="A portrait of a female software architect in a vibrant creative studio. Modern, high-key lighting creates a professional and approachable mood. Clean minimalist aesthetic with subtle color accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbKHPBpJ0P8XkI7s5yoaOFf-_3jK9QIEulFczqBo9Zi-pxpCkiU5maeUlHBa563HCOMIUVOcLZIWqI_aNYexOzsgHZPtaIHyxt5rqPraCoxDboJshQ_xUHLKu5M4MGMZQZfKrdx9kroGmQQgStoIjBL6c6hzCV3Y6LutuhfjOLHNkk5B0qKWPtfh09tly9ajVLjm30djQMdht5naqJmnt5o2mfDnsYsoP2bxRfQT5H-6dT6bpEG9UHSOcZfeUO1ZSLWPvg5ewKyro"/>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-low bg-brand-50 text-brand-600 flex items-center justify-center text-[10px] font-bold">+12</div>
+</div>
+<button class="font-label-caps text-label-caps bg-on-surface text-surface py-2 px-4 rounded-lg hover:opacity-90 transition-opacity">Manage Access</button>
+</div>
+</div>
+</div>
+<div class="bg-brand-900 rounded-xl p-6 text-white flex flex-col justify-between relative overflow-hidden">
+<div class="z-10">
+<span class="font-label-caps text-label-caps text-brand-400 mb-2 block">Pro Feature</span>
+<h4 class="font-headline-sm text-headline-sm mb-2">Automated Documentation</h4>
+<p class="font-body-sm text-body-sm opacity-80">Let AI write your READMEs and internal wikis directly from source code analysis.</p>
+</div>
+<button class="z-10 w-full mt-6 bg-brand-500 hover:bg-brand-400 text-white font-semibold py-2 rounded-lg transition-colors">Upgrade Now</button>
+<!-- Decorative element -->
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+<script>
+        // Micro-interactions
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+                const textarea = document.querySelector('textarea');
+                if (textarea.value.trim()) {
+                    alert('Simulating AI Request: ' + textarea.value);
+                    textarea.value = '';
+                }
+            }
+        });
+
+        // Simple Hover Effects for cards
+        const cards = document.querySelectorAll('.hover\\:shadow-sm');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body></html>

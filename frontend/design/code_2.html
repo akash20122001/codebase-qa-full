@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Repositories | Codebase AI</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#f2f0f0",
+                    "inverse-surface": "#303031",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-container": "#666670",
+                    "secondary-container": "#ab8ffe",
+                    "secondary-fixed-dim": "#cebdff",
+                    "tertiary": "#4e4e58",
+                    "on-secondary-fixed": "#21005e",
+                    "outline": "#7b7487",
+                    "brand-900": "#4C1D95",
+                    "surface-container-highest": "#e3e2e2",
+                    "primary-fixed-dim": "#d2bbff",
+                    "background": "#fbf9f9",
+                    "on-primary-fixed": "#25005a",
+                    "inverse-primary": "#d2bbff",
+                    "on-secondary-fixed-variant": "#4f319c",
+                    "border-subtle": "#F5F5F5",
+                    "on-background": "#1b1c1c",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#e3e2e2",
+                    "on-tertiary-container": "#e7e5f1",
+                    "outline-variant": "#ccc3d8",
+                    "surface-container-low": "#f5f3f3",
+                    "secondary": "#674bb5",
+                    "brand-600": "#7C3AED",
+                    "error": "#DC2626",
+                    "surface": "#fbf9f9",
+                    "on-surface-variant": "#4a4455",
+                    "on-primary": "#ffffff",
+                    "brand-500": "#8B5CF6",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#c7c5d1",
+                    "surface-container-lowest": "#ffffff",
+                    "warning": "#CA8A04",
+                    "tertiary-fixed": "#e3e1ed",
+                    "primary-container": "#7c3aed",
+                    "surface-container-high": "#e9e8e7",
+                    "on-tertiary-fixed": "#1a1b23",
+                    "brand-50": "#F5F3FF",
+                    "primary": "#630ed4",
+                    "border-default": "#E5E5E5",
+                    "surface-bg": "#FFFFFF",
+                    "on-surface": "#1b1c1c",
+                    "surface-tint": "#732ee4",
+                    "surface-dim": "#dbdad9",
+                    "brand-400": "#A78BFA",
+                    "on-primary-container": "#ede0ff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed-variant": "#46464f",
+                    "brand-700": "#6D28D9",
+                    "primary-fixed": "#eaddff",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#e8ddff",
+                    "surface-container": "#efeded",
+                    "success": "#16A34A",
+                    "surface-bright": "#fbf9f9",
+                    "on-secondary-container": "#3f1e8c",
+                    "surface-subtle": "#FAFAFA"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "chat-padding": "1.5rem",
+                    "max-width-chat": "780px",
+                    "section-gap": "1.5rem",
+                    "component-gap": "1rem",
+                    "max-width-site": "1100px",
+                    "container-padding": "1rem",
+                    "sidebar-width": "288px"
+            },
+            "fontFamily": {
+                    "body-md": ["Geist"],
+                    "body-sm": ["Geist"],
+                    "card-title": ["Geist"],
+                    "headline-sm": ["Geist"],
+                    "meta-xs": ["Geist"],
+                    "display-xs": ["Geist"],
+                    "label-caps": ["Geist"],
+                    "code-sm": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "card-title": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "headline-sm": ["18px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "meta-xs": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "display-xs": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "code-sm": ["13px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1;
+        }
+        body {
+            background-color: #fbf9f9;
+            color: #1b1c1c;
+        }
+        .sidebar-border-active {
+            border-left: 2px solid #630ed4;
+        }
+        .animate-pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md">
+<!-- SideNavBar Shell -->
+<aside class="fixed h-full w-sidebar-width left-0 top-0 bg-surface-container-low border-r border-outline-variant flex flex-col py-4 space-y-2 z-50">
+<!-- Header -->
+<div class="px-6 mb-6">
+<div class="flex items-center gap-3">
+<img alt="Logo" class="w-8 h-8 rounded-lg" data-alt="A minimalist vector logo icon for a technical software product. The icon consists of clean, geometric violet shapes arranged in an abstract 'C' pattern on a crisp white background. The style is modern, professional, and corporate-tech, utilizing a high-contrast palette of indigo and white." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHi7gJHc5X4l6CqFzpUXK85arCE9fAGdphHFc1gcdfvIz82_LEIDp5k52205PxRNCogGD3YFQpoW_TrOCI7vSP0yFrS26BgUA7GfsBre4SW-1nGqKSiXSBZE6DPtgozpORkpezSbEBR107cgYNoo4OgNfF07aRWFx48W9SKlYpeSW1zs3UroDNfg3sjJDcN44eQ_BJHr_EZWuwtVCIbwpAOHGF_ZGv2NaYPuAl2etqq_q8JJ3tZhYy2Z99Tsi2uoiIwHUmdnKNyG0"/>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-surface">Codebase AI</h1>
+<p class="font-body-sm text-on-surface-variant text-[10px] uppercase tracking-wider">v1.2.4</p>
+</div>
+</div>
+</div>
+<!-- Navigation Group -->
+<nav class="flex-1 space-y-1">
+<!-- Active: Repositories -->
+<a class="text-on-surface font-bold border-l-2 border-primary bg-surface-container-high flex items-center px-6 py-3 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="folder_open">folder_open</span>
+<span class="font-label-caps text-label-caps">Repositories</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-6 py-3 hover:bg-surface-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-label-caps text-label-caps">Conversations</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-6 py-3 hover:bg-surface-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="sync">sync</span>
+<span class="font-label-caps text-label-caps">Indexing</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-6 py-3 hover:bg-surface-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</nav>
+<!-- Sidebar CTA -->
+<div class="px-4 py-4">
+<button class="w-full bg-brand-600 text-white font-semibold py-2.5 rounded-lg hover:bg-brand-700 transition-all flex items-center justify-center gap-2 shadow-sm active:scale-95">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+<span class="text-body-sm">New Chat</span>
+</button>
+</div>
+<!-- Footer Nav -->
+<div class="mt-auto border-t border-outline-variant pt-2">
+<a class="text-on-surface-variant flex items-center px-6 py-2.5 hover:bg-surface-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="description">description</span>
+<span class="font-label-caps text-label-caps text-[10px]">Documentation</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-6 py-2.5 hover:bg-surface-container transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="rate_review">rate_review</span>
+<span class="font-label-caps text-label-caps text-[10px]">Feedback</span>
+</a>
+<div class="px-6 py-4 flex items-center gap-3">
+<img alt="User Profile Avatar" class="w-8 h-8 rounded-full bg-surface-container-highest" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdUgxGwrMiyV2wJzxRJsjc7JyMMGqSJQBDpNcxCJDeeXwlRyWJHiEX-s5wKo_ttdw6kC_2EhU8vLyyuIaA-BamZEMDfcfy1gZzqaJvFZt1evizF7fvwszoKsRwQoYX2rqHJmSwo2eCv6aLGbKb_DHXuvAregghRcOpWBgz05tfVZq7o1mPlbtEA1yAfNWX7luTGVUs0xlZk37X0FaaU8lcHc-0U7h-c2jcmsftBZLaZ6M0NhKuYDBoc-1CRSkG2wE3kcsFcB-xpmU"/>
+<div class="overflow-hidden">
+<p class="font-card-title text-card-title truncate">alex.dev</p>
+<p class="text-[11px] text-on-surface-variant truncate">Pro Plan</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 right-0 left-sidebar-width h-16 bg-surface border-b border-outline-variant z-40 flex items-center justify-between px-chat-padding">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="font-code-sm text-code-sm">main-repository</span>
+<span class="text-outline-variant">/</span>
+<span class="font-code-sm text-code-sm font-semibold text-primary">production</span>
+</div>
+<div class="h-4 w-[1px] bg-outline-variant mx-2"></div>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="search">search</span>
+<input class="pl-9 pr-4 py-1.5 bg-surface-container-low border border-outline-variant rounded-lg text-body-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none w-64 transition-all" placeholder="Search repositories..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-on-surface-variant p-2 hover:bg-surface-container-highest rounded-lg transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<button class="text-on-surface-variant p-2 hover:bg-surface-container-highest rounded-lg transition-colors">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<div class="h-6 w-[1px] bg-outline-variant mx-1"></div>
+<button class="bg-surface-container-high text-on-surface font-semibold px-4 py-2 rounded-lg hover:bg-surface-container-highest transition-all flex items-center gap-2 active:scale-95 text-body-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="sync">sync</span>
+                Re-index
+            </button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-sidebar-width pt-16 min-h-screen bg-background">
+<div class="max-w-site mx-auto px-chat-padding py-8">
+<!-- Page Header Section -->
+<div class="flex items-end justify-between mb-8">
+<div>
+<h2 class="font-display-xs text-display-xs text-on-surface">Repositories</h2>
+<p class="text-on-surface-variant mt-1">Manage connected codebases and their indexing status for AI analysis.</p>
+</div>
+<button class="bg-brand-600 text-white font-semibold px-6 py-2.5 rounded-lg hover:bg-brand-700 transition-all flex items-center gap-2 shadow-sm active:scale-95">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                    Connect Repo
+                </button>
+</div>
+<!-- Dashboard Stats (Subtle Tonal Layering) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-component-gap mb-10">
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Total Size</p>
+<p class="font-display-xs text-[20px] text-on-surface">1.2 GB</p>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Ready</p>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-success rounded-full"></span>
+<p class="font-display-xs text-[20px] text-on-surface">12</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Indexing</p>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-warning rounded-full animate-pulse"></span>
+<p class="font-display-xs text-[20px] text-on-surface">1</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Last Sync</p>
+<p class="font-display-xs text-[20px] text-on-surface">14m ago</p>
+</div>
+</div>
+<!-- Repositories Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Card 1: Ready Status -->
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-200">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-brand-50 rounded-lg flex items-center justify-center border border-brand-500/10">
+<span class="material-symbols-outlined text-brand-600" data-icon="account_tree">account_tree</span>
+</div>
+<div>
+<h3 class="font-card-title text-card-title text-on-surface">production-api</h3>
+<p class="text-meta-xs text-on-surface-variant">github.com/org/prod-api</p>
+</div>
+</div>
+<div class="bg-green-50 text-green-600 px-2 py-1 rounded-full flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
+<span class="font-label-caps text-[10px]">Ready</span>
+</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex justify-between text-meta-xs text-on-surface-variant">
+<span>4,281 files indexed</span>
+<span>Updated 2h ago</span>
+</div>
+</div>
+<div class="flex items-center gap-2 pt-4 border-t border-outline-variant/50">
+<button class="flex-1 py-1.5 text-body-sm font-semibold text-on-surface-variant hover:bg-surface-container rounded transition-colors flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="open_in_new">open_in_new</span>
+                            GitHub
+                        </button>
+<button class="flex-1 py-1.5 text-body-sm font-semibold text-on-surface-variant hover:bg-surface-container rounded transition-colors flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="refresh">refresh</span>
+                            Re-index
+                        </button>
+<button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-error-container/20 rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Indexing Status -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-yellow-50 rounded-lg flex items-center justify-center border border-yellow-500/10">
+<span class="material-symbols-outlined text-warning animate-pulse-slow" data-icon="database">database</span>
+</div>
+<div>
+<h3 class="font-card-title text-card-title text-on-surface">data-warehouse-v2</h3>
+<p class="text-meta-xs text-on-surface-variant">github.com/org/dw-v2</p>
+</div>
+</div>
+<div class="bg-yellow-50 text-warning px-2 py-1 rounded-full flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 bg-warning rounded-full animate-pulse"></span>
+<span class="font-label-caps text-[10px]">Indexing</span>
+</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex justify-between text-meta-xs text-on-surface-variant mb-1">
+<span>Processing vectors...</span>
+<span>64%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-warning h-full w-[64%] rounded-full transition-all duration-1000 ease-in-out"></div>
+</div>
+</div>
+<div class="flex items-center gap-2 pt-4 border-t border-outline-variant/50">
+<button class="flex-1 py-1.5 text-body-sm font-semibold text-on-surface-variant hover:bg-surface-container rounded transition-colors flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="open_in_new">open_in_new</span>
+                            GitHub
+                        </button>
+<button class="flex-1 py-1.5 text-body-sm font-semibold text-on-surface-variant cursor-not-allowed opacity-50 flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="refresh">refresh</span>
+                            Wait...
+                        </button>
+<button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-error-container/20 rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="close">close</span>
+</button>
+</div>
+</div>
+<!-- Card 3: Ready Status -->
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl p-5 shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-200">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-brand-50 rounded-lg flex items-center justify-center border border-brand-500/10">
+<span class="material-symbols-outlined text-brand-600" data-icon="web">web</span>
+</div>
+<div>
+<h3 class="font-card-title text-card-title text-on-surface">marketing-site-ui</h3>
+<p class="text-meta-xs text-on-surface-variant">github.com/org/landing</p>
+</div>
+</div>
+<div class="bg-green-50 text-green-600 px-2 py-1 rounded-full flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
+<span class="font-label-caps text-[10px]">Ready</span>
+</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex justify-between text-meta-xs text-on-surface-variant">
+<span>152 files indexed</span>
+<span>Updated 1d ago</span>
+</div>
+</div>
+<div class="flex items-center gap-2 pt-4 border-t border-outline-variant/50">
+<button class="flex-1 py-1.5 text-body-sm font-semibold text-on-surface-variant hover:bg-surface-container rounded transition-colors flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="open_in_new">open_in_new</span>
+                            GitHub
+                        </button>
+<button class="flex-1 py-1.5 text-body-sm font-semibold text-on-surface-variant hover:bg-surface-container rounded transition-colors flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="refresh">refresh</span>
+                            Re-index
+                        </button>
+<button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-error-container/20 rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Connect Placeholder (Bento Style) -->
+<button class="group relative flex flex-col items-center justify-center p-8 rounded-xl border-2 border-dashed border-outline-variant bg-surface-container-low/50 hover:bg-surface-container-low hover:border-brand-400 transition-all duration-200 min-h-[220px]">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="add_circle">add_circle</span>
+</div>
+<span class="font-card-title text-card-title text-on-surface">Connect Repository</span>
+<span class="text-meta-xs text-on-surface-variant mt-1">Import from GitHub or GitLab</span>
+</button>
+</div>
+<!-- Activity Feed Section (Minimalist Table Alternative) -->
+<div class="mt-16">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-4">Recent Activity</h3>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="divide-y divide-outline-variant/50">
+<!-- Activity Item 1 -->
+<div class="flex items-center justify-between p-4 hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded bg-green-50 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined text-[18px]" data-icon="check_circle">check_circle</span>
+</div>
+<div>
+<p class="text-body-sm font-medium">Re-indexed <span class="font-code-sm text-primary">production-api</span></p>
+<p class="text-meta-xs text-on-surface-variant">Completed in 45s • 12 new files detected</p>
+</div>
+</div>
+<span class="text-meta-xs text-on-surface-variant">14m ago</span>
+</div>
+<!-- Activity Item 2 -->
+<div class="flex items-center justify-between p-4 hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded bg-brand-50 flex items-center justify-center text-brand-600">
+<span class="material-symbols-outlined text-[18px]" data-icon="link">link</span>
+</div>
+<div>
+<p class="text-body-sm font-medium">New repository connected <span class="font-code-sm text-primary">marketing-site-ui</span></p>
+<p class="text-meta-xs text-on-surface-variant">Source: GitHub Enterprise</p>
+</div>
+</div>
+<span class="text-meta-xs text-on-surface-variant">1d ago</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Background Decoration (Light Subtle Glow) -->
+<div class="fixed top-0 right-0 -z-10 w-[600px] h-[600px] bg-brand-50 rounded-full blur-[120px] opacity-40 translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+
+        // Simulating Progress Bar update
+        const progressBar = document.querySelector('.bg-warning.h-full');
+        if(progressBar) {
+            let progress = 64;
+            setInterval(() => {
+                if(progress < 99) {
+                    progress += (Math.random() * 0.5);
+                    progressBar.style.width = progress + '%';
+                    progressBar.parentElement.previousElementSibling.lastElementChild.innerText = Math.floor(progress) + '%';
+                }
+            }, 3000);
+        }
+    </script>
+</body></html>
